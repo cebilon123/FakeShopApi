@@ -7,6 +7,102 @@ import (
 	"net/http"
 )
 
+const isPies = "isPies"
+
+var (
+	catProducts = []ShopProduct{
+		{
+			Name: "Biedronka",
+			Product: Product{
+				Name:  "Purina kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Maxi ZOO",
+			Product: Product{
+				Name:  "Purina kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Lidl",
+			Product: Product{
+				Name:  "Purina kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		// whiskas
+		{
+			Name: "Biedronka",
+			Product: Product{
+				Name:  "Whiskas kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Maxi ZOO",
+			Product: Product{
+				Name:  "Whiskas kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Lidl",
+			Product: Product{
+				Name:  "Whiskas kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+	}
+
+	dogProducts = []ShopProduct{
+		{
+			Name: "Biedronka",
+			Product: Product{
+				Name:  "Pedgree kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Maxi ZOO",
+			Product: Product{
+				Name:  "Pedgree kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Lidl",
+			Product: Product{
+				Name:  "Pedgree kurczak 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		// whiskas
+		{
+			Name: "Biedronka",
+			Product: Product{
+				Name:  "Psiaszama wół i kawał kurczaka 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Maxi ZOO",
+			Product: Product{
+				Name:  "Psiaszama wół i kawał kurczaka",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+		{
+			Name: "Lidl",
+			Product: Product{
+				Name:  "Psiaszama wół i kawał kurczaka 1kg",
+				Price: rand.Float32() * float32(rand.Intn(60)),
+			},
+		},
+	}
+)
+
 type ShopProduct struct {
 	Name    string  `json:"Name,omitempty"`
 	Product Product `json:"Product"`
@@ -21,50 +117,10 @@ func main() {
 	r := gin.Default()
 	r.Use(CORSMiddleware())
 	r.GET("/prices", func(c *gin.Context) {
-		shopProducts := []ShopProduct{
-			{
-				Name: "Biedronka",
-				Product: Product{
-					Name:  "Purina kurczak 1kg",
-					Price: rand.Float32() * float32(rand.Intn(60)),
-				},
-			},
-			{
-				Name: "Maxi ZOO",
-				Product: Product{
-					Name:  "Purina kurczak 1kg",
-					Price: rand.Float32() * float32(rand.Intn(60)),
-				},
-			},
-			{
-				Name: "Lidl",
-				Product: Product{
-					Name:  "Purina kurczak 1kg",
-					Price: rand.Float32() * float32(rand.Intn(60)),
-				},
-			},
-			// whiskas
-			{
-				Name: "Biedronka",
-				Product: Product{
-					Name:  "Whiskas kurczak 1kg",
-					Price: rand.Float32() * float32(rand.Intn(60)),
-				},
-			},
-			{
-				Name: "Maxi ZOO",
-				Product: Product{
-					Name:  "Whiskas kurczak 1kg",
-					Price: rand.Float32() * float32(rand.Intn(60)),
-				},
-			},
-			{
-				Name: "Lidl",
-				Product: Product{
-					Name:  "Whiskas kurczak 1kg",
-					Price: rand.Float32() * float32(rand.Intn(60)),
-				},
-			},
+		shopProducts := catProducts
+
+		if c.Query(isPies) == "true" {
+			shopProducts = dogProducts
 		}
 
 		c.JSON(http.StatusOK, shopProducts)
